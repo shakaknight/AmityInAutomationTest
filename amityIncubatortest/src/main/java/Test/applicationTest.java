@@ -4,17 +4,33 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
 
+import dataMaker.BeforeAndAfterTest;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class applicationTest {
-	public static String browser="Chrome";
+public class applicationTest extends BeforeAndAfterTest{
+	//public static String browser="firefox";
 	public static WebDriver driver;
-	public static void main(String[] args) throws InterruptedException {
-		WebDriverManager.chromedriver().setup();
-		driver = new ChromeDriver();
+	
+	@Parameters({ "browser" })
+	@Test
+	public void launchApplicationt(String browser) throws InterruptedException {
+	// public static void main(String[] args) throws InterruptedException {
+		
+		if(browser.equals("firefox")) {
+			WebDriverManager.firefoxdriver().setup();
+			driver = new FirefoxDriver();
+		}
+		else if(browser.equals("Chrome")) {
+			WebDriverManager.chromedriver().setup();
+			driver = new ChromeDriver();
+			
+		}
 		driver.manage().window().maximize();
 		driver.get("https://startupapply.amityincubator.com/");
 		driver.findElement(By.id("mat-input-0")).sendKeys("Virtual hand");
